@@ -1,7 +1,7 @@
 --[[
 	- Author : Mawin CK
 	- Date : 2025
-	-- Verison : 0.0.6
+	-- Verison : 0.0.9
 ]]
 
 -- Services
@@ -11,12 +11,15 @@ local RS = game:GetService("RunService")
 -- Requires
 local FastCast2 = script.Parent
 local FastCastM = require(FastCast2)
-local TypeDefinitions = require(script.Parent.TypeDefinitions)
+
+local FastCastEnums = require(FastCast2:WaitForChild("FastCastEnums"))
 local TypeDef = require(FastCast2:WaitForChild("TypeDefinitions"))
 --local Signal = require(FastCast2:WaitForChild("Signal"))
 local ActiveCast = require(FastCast2:WaitForChild("ActiveCast"))
-local ActiveBlockcast = require(FastCast2:WaitForChild("ActiveBlockcast"))
 local FastCastEventsModule: ModuleScript? = nil
+
+-- Enums
+local EnumCastTypes = FastCastEnums.CastType
 
 
 --[=[
@@ -56,7 +59,7 @@ local function HandleBulkMoveTo()
 		if not ProjectilePart then
 			continue
 		end
-		
+
 		local resultCFrame = ActiveCasts.CFrame
 		if ProjectilePart:IsA("BasePart") then
 			table.insert(Parts, ProjectilePart)
@@ -73,7 +76,7 @@ local function HandleBulkMoveTo()
 end
 
 local function SendCastFire(
-	cast: TypeDefinitions.ActiveCastCompement,
+	cast: TypeDefinitions.ActiveCastData,
 	origin: Vector3,
 	direction: Vector3,
 	velocity: Vector3 | number,
@@ -135,21 +138,21 @@ function BaseCast.Init(BindableOutput: BindableEvent, Data: any)
 			Actor:SetAttribute("Tasks", Actor:GetAttribute("Tasks") - 1)
 		end
 	end)
-	
+
 	SyncChanges = Instance.new("BindableEvent")
 	SyncChanges.Name = "SyncChanges"
 	SyncChanges.Parent = Actor
-	
+
 	SyncChanges.Event:Connect(function(cast: TypeDef.ActiveCastCompement)
 		local ID = cast.ID
 		local TargetCast = Actives[ID]
-		
+
 		if TargetCast then
 			for i, v in cast do
 				TargetCast[i] = v
 			end
 		end
-		
+
 	end)
 
 	return self
@@ -177,16 +180,18 @@ function BaseCast:Raycast(
 )
 	--table.insert(self.Actives, ActiveCast.new(self, Origin, Direction, Velocity, Behavior))
 	Actor:SetAttribute("Tasks", Actor:GetAttribute("Tasks") + 1)
-	
+
 	NextProjectileID += 1
-	
-	Actives[NextProjectileID] = ActiveCast.new({
+
+	Actives[NextProjectileID] = ActiveCast.createCastData({
 		Output = Output,
 		ActiveCastCleaner = ActiveCastCleaner,
 		ObjectCache = ObjectCache,
 		SyncChange = SyncChanges
-	}, NextProjectileID, Origin, Direction, Velocity, Behavior, FastCastEventsModule)
-	
+	}, NextProjectileID, Origin, Direction, Velocity, Behavior, FastCastEventsModule, {
+		CastType = EnumCastTypes.Raycast
+	} :: any)
+
 	if Behavior.FastCastEventsConfig.UseCastFire then
 		SendCastFire(Actives[NextProjectileID], Origin, Direction, Velocity, Behavior)
 	end
@@ -215,11 +220,11 @@ end
 @method Blockcast
 @within BaseCast
 
-@param Origin Vector3 -- The origin of the raycast.
+@param Origin Vector3 -- The origin of the blockcast.
 @param Size Vector3 -- The size of the blockcast.
-@param Direction Vector3 -- The direction of the raycast.
-@param Velocity Vector3 | number -- The velocity of the raycast.
-@param Behavior FastCastBehavior -- The behavior data for the raycast.
+@param Direction Vector3 -- The direction of the blockcast.
+@param Velocity Vector3 | number -- The velocity of the blockcast.
+@param Behavior FastCastBehavior -- The behavior data for the blockcast.
 
 Create a Blockcast.
 
@@ -234,13 +239,61 @@ function BaseCast:Blockcast(
 	Actor:SetAttribute("Tasks", Actor:GetAttribute("Tasks") + 1)
 	NextProjectileID += 1
 
-	Actives[NextProjectileID] = ActiveBlockcast.new({
+	Actives[NextProjectileID] = ActiveCast.createCastData({
 		Output = Output,
 		ActiveCastCleaner = ActiveCastCleaner,
 		ObjectCache = ObjectCache,
 		SyncChange = SyncChanges
-	}, NextProjectileID, Origin, Size, Direction, Velocity, Behavior, FastCastEventsModule)
-	
+	}, NextProjectileID, Origin, Direction, Velocity, Behavior, FastCastEventsModule, {
+		CastType = EnumCastTypes.Blockcast,
+		Size = Size
+	} :: any)
+
+	if Behavior.FastCastEventsConfig.UseCastFire then
+		SendCastFire(Actives[NextProjectileID], Origin, Direction, Velocity, Behavior)
+	end
+	if Behavior.FastCastEventsModuleConfig.UseCastFire then
+		local CastFireFunction = GetCastFireFunction()
+		if CastFireFunction then
+			CastFireFunction(Actives[NextProjectileID], Origin, Direction, Velocity, Behavior)
+		end
+	end
+end
+
+--[=[
+
+@method Spherecast
+@within BaseCast
+
+@param Origin Vector3 -- The origin of the spherecast.
+@param Radius number -- The radius of the spherecast.
+@param Direction Vector3 -- The direction of the spherecast.
+@param Velocity Vector3 | number -- The velocity of the spherecast.
+@param Behavior FastCastBehavior -- The behavior data for the spherecast.
+
+Create a Spherecast.
+
+]=]
+function BaseCast:Spherecast(
+	Origin: Vector3,
+	Radius: number,
+	Direction: Vector3,
+	Velocity: Vector3 | number,
+	Behavior: TypeDef.FastCastBehavior
+)
+	Actor:SetAttribute("Tasks", Actor:GetAttribute("Tasks") + 1)
+	NextProjectileID += 1
+
+	Actives[NextProjectileID] = ActiveCast.createCastData({
+		Output = Output,
+		ActiveCastCleaner = ActiveCastCleaner,
+		ObjectCache = ObjectCache,
+		SyncChange = SyncChanges
+	}, NextProjectileID, Origin, Direction, Velocity, Behavior, FastCastEventsModule, {
+		CastType = EnumCastTypes.Spherecast,
+		Radius = Radius
+	} :: any)
+
 	if Behavior.FastCastEventsConfig.UseCastFire then
 		SendCastFire(Actives[NextProjectileID], Origin, Direction, Velocity, Behavior)
 	end
