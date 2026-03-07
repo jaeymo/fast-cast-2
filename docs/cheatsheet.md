@@ -2,8 +2,7 @@
 
 ## Caster
 
-```lua
-
+```luau
 -- Construct and Init
 local Caster = FastCast2.new() -- Construct a new Caster
 
@@ -56,7 +55,23 @@ FastCast:AddAccelerationCast(cast: vaildcast, acceleration: Vector3) -- Add acce
 FastCast:SyncChangesToCast(cast: vaildcast) -- Synchronize new changes to the ActiveCast.
 FastCast:TerminateCast(cast: vaildcast) -- Terminate function for casts
 
--- Field
+--// Field
 
+-- Signal
+Caster.LengthChanged: (RBXScriptConnection | OnLengthChangedFunction)?
+Caster.Hit: (RBXScriptConnection | OnHitFunction)?
+Caster.Pierced: (RBXScriptConnection | OnPierceFunction)?,
+Caster.CastFire: (RBXScriptConnection | OnCastFireFunction)?
+Caster.CastTerminating: (RBXScriptConnection | OnCastFireFunction)?
+
+-- Other
+Caster.WorldRoot: WorldRoot -- WorldRoot of Caster object
+Caster.AlreadyInit: boolean
+Caster.ObjectCacheEnabled: boolean
+Caster.BulkMoveEnabled: boolean
+Caster.FastCastEventsModule: ModuleScript
+
+Caster.ObjectCache: ObjectCache
+Caster.Dispatcher: Dispatcher
 
 ```
