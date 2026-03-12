@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # FastCast2 CheatSheet v0.0.9
 
 ## Caster
