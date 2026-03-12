@@ -235,6 +235,13 @@ end
 
 return module
 ```
+
+After this add this piece of code below the `FastCast:Init(...)`:
+
+```lua
+	Caster:SetFastCastEventsModule(pathTo.FastCastEventsModule)
+```
+
 (FastCastEventsModule can be used to optimize some FastCastEvents, like LengthChanged)
 
 ### -> Get started with the [FastCast2 documentation](https://weenachuangkud.github.io/FastCast2/)
