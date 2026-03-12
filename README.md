@@ -22,7 +22,6 @@
 
 **An improved version of [FastCast](https://etithespir.it/FastCastAPIDocs/)** with **Parallel scripting**, **more extensions**, and **statically typed**. <br /> **A powerful modern projectile** library
 
-
 **FastCast2** It's a **Roblox projectile library** powered by [VMsDispatcher](https://github.com/weenachuangkud/VMsDispatcher) designed to simulate **thousands** of projectiles without relying on physics replication.
 
 Because FastCast is no longer actively maintained by [EtiTheSpirit](https://github.com/EtiTheSpirit), this repository continues the project with updates and adaptations.
@@ -67,6 +66,7 @@ Read more on [FastCast2 devforum](https://devforum.roblox.com/t/fastcast2-an-imp
 # Code example
 
 Shooting projectiles from your head
+
 ```lua
 -- Services
 local Rep = game:GetService("ReplicatedStorage")
@@ -179,6 +179,7 @@ end)
 <br />
 
 How to set up [FastCastEventsModule](https://weenachuangkud.github.io/FastCast2/api/TypeDefinitions/#FastCastEventsModule)
+
 ```lua
 -- Services
 local Rep = game:GetService("ReplicatedStorage")
@@ -246,9 +247,7 @@ After this add this piece of code below the `FastCast:Init(...)`:
 
 ### -> Get started with the [FastCast2 documentation](https://weenachuangkud.github.io/FastCast2/)
 
-
 ---
-
 
 # People behind FastCast2
 - [Mawin CK](https://github.com/weenachuangkud): Main developer, Maintainer, Graphic designer 
