@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -19,6 +23,7 @@ and this project adheres to Semantic Versioning (https://semver.org/).
 - Type errors
 - Typo fixes
 - No longer errors now when attempting to index with FastCastEvents with guarding
+- Fixed CanPierce logic
 
 ## [0.0.8] — 2026-02-22
 ### Added
