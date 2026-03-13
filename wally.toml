@@ -1,7 +1,7 @@
 [package]
 name = "jaeymo/fast-cast-2"
 description = "Forked FastCast2"
-author = ["Mawin Chuangkud"]
-version = "0.0.8"
+authors = ["Mawin Chuangkud"]
+version = "1.0.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
