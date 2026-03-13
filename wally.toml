@@ -1,7 +1,7 @@
 [package]
-name = "weenachuangkud/fastcast2" # Replace with your Roblox username and project name
-description = "An improved version of FastCast with Parallel scripting, more extensions, and statically typed"
+name = "jaeymo/fast-cast-2"
+description = "Forked FastCast2"
 author = ["Mawin Chuangkud"]
 version = "0.0.8"
-registry = "https://github.com/weenachuangkud/FastCast2"
-realm = "shared" # Or "server" or "client" depending on your package's scope
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
